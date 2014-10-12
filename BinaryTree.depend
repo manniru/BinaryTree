@@ -1,0 +1,15 @@
+# depslib dependency file v1.0
+1412939503 source:d:\mannircpp\binarytree\main.cpp
+	<iostream>
+	<string.h>
+	"stdio.h"
+	<stdlib.h>
+	<fcntl.h>
+	<time.h>
+	<algorithm>
+	<string>
+	<string>
+	<bitset>
+	<cstdlib>
+	<time.h>
+
