@@ -8,13 +8,7 @@
 #include <algorithm>
 #include <string>
 
-#include <string>
-#include <bitset>
-#include <cstdlib>
-#include <time.h>
-using namespace std;
-
-const int tagnum=100;
+const int tagnum=10;
 const int idlong=8;
 int collisionnum=0;
 int collno=0;
@@ -28,18 +22,6 @@ struct node{
 struct node tag[tagnum];
 
 using namespace std;
-
-void generateTags(int nos) {
-    int i;
-    srand(time(NULL));
-    //cout << "a random 8-bit numbers between 0 and 255" << endl;
-    for(int i=0;i<nos;i++){
-        int num = rand() % 256;
-        cout << (bitset<8>) num << endl;
-    }
-
-
-}
 
 void creatID() {
 	int i;
@@ -83,11 +65,10 @@ int main()
     string cnt;
     //cout << prefix;
 
-    string ids[] = {"", "11001000", "00111111", "10101001", "00100110", "10101110", "11011011", "10100111", "10100111", "01000001", "01000110",
-    "11001010", "00111111", "10101001", "01100110", "10101110", "11011011", "10110111", "10100111", "00101001", "01100110"};
+    string ids[] = {"", "11001000", "00111111", "10101001", "00100110", "10101110", "11011011", "10100111", "10100111", "00000001", "01000110"};
 
     prefix = "0";
-     for(int i = 1; i <= 50; i++) {
+     for(int i = 1; i <= 10; i++) {
             string p1="";
         string id = ids[i];
         p1 = id.substr(0,1);
@@ -188,7 +169,6 @@ int main()
    stack1.append("001");
    stack1.append(",");
 
-//generateTags(100);
 
     return 0;
 }
