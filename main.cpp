@@ -1,32 +1,15 @@
-#include <iostream>
-using namespace std;
-
-#include <iomanip>
-using std::setw;
-
 #include <string.h>
 #include "stdio.h"
 #include <stdlib.h>
 #include <fcntl.h>
 #include <time.h>
 
-#include <algorithm>
-#include <string>
 #include <iostream>
+#include <string>
 
-
-const int tagnum=10;
+const int tagnum=100;
 const int idlong=8;
-string tagno;
-string tagno1;
-char tagno2[8];
-string prefix;
-string stack1="";
-string coll = "";
-string cnt;
-
 int collisionnum=0;
-int collno=0;
 
 char answer[idlong+1];
 struct node{
@@ -36,93 +19,321 @@ struct node{
 };
 struct node tag[tagnum];
 
-void creatID() {
+void request(char tag_command[],int tag_com_bitnum)
+{
+	int tag_tran;
+	for (tag_tran=0;tag_tran<tagnum;tag_tran++)
+	{
+		if (tag[tag_tran].sleep&&strcmp(tag_command,tag[tag_tran].id)<=0)
+			break;
+
+	}
+	if (tag_tran==tagnum)
+	{
+		return;
+	}
+
+	for(int i=0;i<idlong;i++)
+	{
+		for(int j=0;j<tagnum-1;j++)
+		{
+
+			if (tag[j].sleep&&strcmp(tag_command,tag[j].id)<=0)
+			{
+
+				for (int k=j+1;k<tagnum;k++)
+					if(tag[k].sleep&&strcmp(tag_command,tag[k].id)<=0)
+					{
+						if (tag[j].id[i]!=tag[k].id[i])
+						{collisionnum++;
+						answer[i]='*';
+						break;
+						}
+
+					}
+					else continue;
+					if (answer[i]=='*')
+						break;
+			}
+			else continue;
+
+		}
+	if (answer[i]=='*')
+	continue;
+	else
+	answer[i]=tag[tag_tran].id[i];
+	}
+	answer[idlong]='\0';
+
+}
+
+void creatID()
+{
 	int i;
 	int j;
-	printf("Binary-Tree Algorithms Tags examples ID is:\n");
-	//printf("Total Number of Tags: "+tagnum+"\n");
-	for( i=0;i<tagnum;i++) {
-		tag[i].sleep=true;
-		for(j=0;j<idlong;j++) {
-                tag[i].id[j]=rand()%2+48; tag[i].id[idlong]='\0';
-                tagno1 = tag[i].id;
-		}
-		    cout << "Tag ID " << i+1 << " = " << tagno1 << "\n";
+	//printf("GENERATED RANDOM TAGS:\n");
+	int cnt = 1;
 
-		//printf("Tag ID %d = %s\n",i+1, tagno2);
+	for( i=0;i<tagnum;i++)
+	{
+		tag[i].sleep=true;
+		for(j=0;j<idlong;j++)
+			tag[i].id[j]=rand()%2+48;
+		tag[i].id[idlong]='\0';
+		////printf("ID %d :%s\n",i+1,tag[i].id);
 	}
 
 }
 
-string convertInt(int number)
+void generateTags()
 {
-    if (number == 0)
-        return "0";
-    string temp="";
-    string returnvalue="";
-    while (number>0)
+	int i;
+	int j;
+	printf("                        GENERATED RANDOM TAGS\n");
+	int cnt = 1;
+
+    for(int a=1;a<=20;a++)
     {
-        temp+=number%10+48;
-        number/=10;
+        for(int b=1;b<=5;b++)
+        {
+            printf("|-------------");
+        }
+        printf("|\n");
+        //printf("|-------------|-------------|-------------|-------------|-------------|\n");
+
+        for(int b=1;b<=5;b++)
+        {
+            if(cnt<10) printf("|  %d=%s ",cnt, tag[cnt].id);
+            if(cnt>=10) printf("| %d=%s ",cnt, tag[cnt].id);
+            if(cnt==100) printf("|%d=%s ",cnt, tag[cnt].id);
+
+            cnt++;
+        }
+        printf("|\n");
+
+
+        //printf("| 01=10100101 | 02=10100101 | 03=10100101 | 04=10100101 | 05=10100101 |\n");
+        //printf("|-------------|-------------|-------------|-------------|-------------|\n");
+
+        for(int b=1;b<=5;b++)
+        {
+            printf("|-------------");
+        }
+        printf("|\n");
+
     }
-    for (int i=0;i<temp.length();i++)
-        returnvalue+=temp[temp.length()-i-1];
-    return returnvalue;
+
 }
 
 
-string checkcollusion(string prefix, int no)
+int main()
 {
-   // local variable declaration
-   string result;
 
-//result = "Collusion Number: 1 (collusion ids: " << coll << ") Number of Collusion: " << count(coll.begin(), coll.end(), ',')
-    for(int i=0;i<tagnum;i++) {
-        tagno = tag[i].id;
-        //cout << tagno << "\n";
-
-        prefix = "0";
-        string p1="";
-        p1 = tagno.substr(0,1);
-        if(p1==prefix) { coll.append(convertInt(i)); coll.append(","); }
-        stack1.append("1");
-        stack1.append(",");
-
-        //prefix = "00";
-        //coll = "";
-       // p1 = tagno.substr(0,2);
-        //if(p1==prefix) { coll.append(convertInt(i)); coll.append(","); }
-
-        //cout << p1 << "\n";
+	 creatID();
+ generateTags();
 
 
-    }
-//result = "Collusion Number: 1 (collusion ids: " + coll + ") Number of Collusion: " + count(coll.begin(), coll.end(), ',');
-int col = count(coll.begin(), coll.end(), ',');
-//string mystring = string(col);
-char numstr[100];
-sprintf(numstr, "%d", col);
-string name = "(collusion ids: " + coll + ") Number of Collusion: ";
+	int i;
+	int delid=0;
+	int clearnu;
+	char tag_commandbit[idlong+1]="";
 
-sprintf(numstr, "%d", col);
-result = name + numstr;
-//cout << "Collusion Number: 1 (collusion ids: " << coll << ") Number of Collusion: " << count(coll.begin(), coll.end(), ',') << "\n";
+	int  befor_bit[idlong][2];
 
-   return result;
-}
-
-int main ()
-{
-    creatID();
+	int befor_tagnum=0;
+		befor_bit[befor_tagnum][1]=1;
 
 
-cout << checkcollusion("0", 1) << "\n";
-cout << checkcollusion("00", 2) << "\n";
-cout << checkcollusion("000", 3) << "\n";
-cout << checkcollusion("001", 4) << "\n";
-cout << checkcollusion("0010", 5) << "\n";
-cout << checkcollusion("0011", 6) << "\n";
-cout << checkcollusion("01", 7) << "\n";
-//cout << "Collusion Number: 2 (collusion ids: " << coll << ") Number of Collusion: " << count(coll.begin(), coll.end(), ',') << "\n";
-   return 0;
+	int out_num=0;
+	for (clearnu=0;clearnu<idlong;clearnu++)
+	{
+		tag_commandbit[clearnu]='0';
+	}
+	tag_commandbit[idlong]='\0';
+
+
+	int request_num=1;
+	int befor_bitnum=0;
+
+	for (clearnu=0;clearnu<idlong;clearnu++)
+	{
+		answer[clearnu]=' ';
+	}
+
+	request(tag_commandbit,idlong);
+
+			for (clearnu=0;clearnu<idlong;clearnu++)
+			{
+				tag_commandbit[clearnu]=' ';
+			}
+
+	while (request_num>0)
+	{
+
+		if (befor_tagnum>0&&befor_bit[befor_tagnum-1][1]==0)
+		{
+			for(i=0;i<befor_bit[befor_tagnum-1][0];i++)
+				tag_commandbit[i]=answer[i];
+
+			tag_commandbit[i]='0';
+			for (clearnu=0;clearnu<idlong;clearnu++)
+			{
+				answer[clearnu]=' ';
+			}
+
+			request(tag_commandbit,i+1);
+
+			for (clearnu=0;clearnu<idlong;clearnu++)
+			{
+				tag_commandbit[clearnu]=' ';
+			}
+
+		}
+
+
+		while (collisionnum>1)
+		{
+            printf("\ncollisionnum>1 = %s",tag[i].id);
+			for(i=0;i<idlong;i++)
+			{
+
+				if (answer[i]=='*')
+				{
+					tag_commandbit[i]='1';
+					collisionnum=0;
+					request_num++;
+
+					for (clearnu=0;clearnu<idlong;clearnu++)
+					{
+						answer[clearnu]=' ';
+					}
+
+					request(tag_commandbit,i+1);
+
+ 					for (clearnu=0;clearnu<idlong;clearnu++)
+					{
+						tag_commandbit[clearnu]=' ';
+					}
+
+					befor_bit[befor_tagnum][0]=i;
+					befor_bit[befor_tagnum][1]=1;
+					befor_tagnum++;
+					break;
+				}
+
+				tag_commandbit[i]=answer[i];
+
+			}
+
+		}
+
+
+
+		if (collisionnum==0)
+		{
+			request_num--;
+			if( answer[0]!=' ')
+			{	out_num++;
+			printf("\nsuccessful     = ");
+			printf("%s\n",answer);
+
+
+
+
+				for (int look_cout=befor_tagnum-1;look_cout>=0;look_cout--)
+				{
+                    printf("\nsuccessful     = %s",tag[i].id);
+					if (befor_bit[look_cout][1]==1)
+					{
+						befor_tagnum=look_cout+1;
+						befor_bit[look_cout][1]=0;
+						break;
+					}
+
+				}
+
+			}
+
+			for (delid=0;delid<tagnum;delid++)
+			{
+                    ////printf("answer2");
+				if (strcmp(tag[delid].id,answer)==0)
+				{
+					tag[delid].sleep=false;
+					break;
+				}
+			}
+
+
+		}
+
+		else if(collisionnum==1)
+		{
+            printf("\ncollisionnum=1 = %s",tag[i].id);
+			collisionnum=0;
+
+				for (int look_cout=befor_tagnum-1;look_cout>=0;look_cout--)
+				{
+					if (befor_bit[look_cout][1]==1)
+					{
+						befor_tagnum=look_cout+1;
+						befor_bit[look_cout][1]=0;
+						break;
+					}
+
+				}
+
+
+			for (i=0;i<idlong;i++)
+			{
+				if (answer[i]=='*')
+				{
+					answer[i]='1';
+					out_num++;
+					printf("\nsuccessful     = ");
+					printf("%s\n",answer);
+
+
+
+					request_num--;
+
+
+					for (delid=0;delid<tagnum;delid++)
+					{
+						if (strcmp(tag[delid].id,answer)==0)
+						{
+							tag[delid].sleep=false;
+							break;
+						}
+					}
+
+					answer[i]='0';
+					out_num++;
+					printf("\nsuccessful     = ");
+					printf("%s\n",answer);
+
+
+				//	if(befor_tagnum!=0)
+					//	befor_tagnum--;
+
+					for (int delid=0;delid<tagnum;delid++)
+					{
+						if (strcmp(tag[delid].id,answer)==0)
+						{
+							tag[delid].sleep=false;
+							break;
+						}
+					}
+				break;
+				}
+
+
+			}
+			//read(id)
+
+		}
+
+	}
+	return 0;
+   //system("pause");
 }

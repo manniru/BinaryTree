@@ -13,8 +13,9 @@
 	<cstdlib>
 	<time.h>
 
-1413161086 source:d:\git\binarytree\main.cpp
+1413167422 source:d:\git\binarytree\main.cpp
 	<iostream>
+	<iomanip>
 	<string.h>
 	"stdio.h"
 	<stdlib.h>
@@ -22,4 +23,5 @@
 	<time.h>
 	<algorithm>
 	<string>
+	<iostream>
 
