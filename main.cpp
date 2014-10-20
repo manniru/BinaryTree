@@ -1,4 +1,9 @@
 #include <iostream>
+using namespace std;
+
+#include <iomanip>
+using std::setw;
+
 #include <string.h>
 #include "stdio.h"
 #include <stdlib.h>
@@ -7,9 +12,19 @@
 
 #include <algorithm>
 #include <string>
+#include <iostream>
+
 
 const int tagnum=10;
 const int idlong=8;
+string tagno;
+string tagno1;
+char tagno2[8];
+string prefix;
+string stack1="";
+string coll = "";
+string cnt;
+
 int collisionnum=0;
 int collno=0;
 
@@ -21,23 +36,23 @@ struct node{
 };
 struct node tag[tagnum];
 
-using namespace std;
-
 void creatID() {
 	int i;
 	int j;
-	printf("Q-Ary Algorithms Tags examples ID is:\n");
+	printf("Binary-Tree Algorithms Tags examples ID is:\n");
 	//printf("Total Number of Tags: "+tagnum+"\n");
 	for( i=0;i<tagnum;i++) {
 		tag[i].sleep=true;
-		for(j=0;j<idlong;j++)
-			tag[i].id[j]=rand()%2+48;
-		tag[i].id[idlong]='\0';
-		printf("Tag ID Number %d :%s\n",i+1,tag[i].id);
+		for(j=0;j<idlong;j++) {
+                tag[i].id[j]=rand()%2+48; tag[i].id[idlong]='\0';
+                tagno1 = tag[i].id;
+		}
+		    cout << "Tag ID " << i+1 << " = " << tagno1 << "\n";
+
+		//printf("Tag ID %d = %s\n",i+1, tagno2);
 	}
 
 }
-
 
 string convertInt(int number)
 {
@@ -54,123 +69,60 @@ string convertInt(int number)
         returnvalue+=temp[temp.length()-i-1];
     return returnvalue;
 }
-int main()
+
+
+string checkcollusion(string prefix, int no)
 {
-    //creatID();
+   // local variable declaration
+   string result;
 
-    string stack1="";
+//result = "Collusion Number: 1 (collusion ids: " << coll << ") Number of Collusion: " << count(coll.begin(), coll.end(), ',')
+    for(int i=0;i<tagnum;i++) {
+        tagno = tag[i].id;
+        //cout << tagno << "\n";
 
-    string prefix;
-    string coll = "";
-    string cnt;
-    //cout << prefix;
-
-    string ids[] = {"", "11001000", "00111111", "10101001", "00100110", "10101110", "11011011", "10100111", "10100111", "00000001", "01000110"};
-
-    prefix = "0";
-     for(int i = 1; i <= 10; i++) {
-            string p1="";
-        string id = ids[i];
-        p1 = id.substr(0,1);
-        if(p1==prefix) { coll.append(convertInt(i)); coll.append(","); }
-
-
-    cout << "ID[" << i << "] => " << id << "==" << p1 << endl;
-  }
-    //string colno = count(coll.begin(), coll.end(), ',');
-   cout << "Collusion Number: 1 (collusion ids: " << coll << ") Number of Collusion: " << count(coll.begin(), coll.end(), ',') << "\n";
-   string coll1 = "m,mm,m,";
-   //cnt = count(coll.begin(), coll.end(), ',');
-
-   stack1.append("1");
-   stack1.append(",");
-
-
-    prefix = "00";
-    coll = "";
-
-    for(int i = 1; i <= 10; i++) {
+        prefix = "0";
         string p1="";
-        string id = ids[i];
-        p1 = id.substr(0,2);
+        p1 = tagno.substr(0,1);
         if(p1==prefix) { coll.append(convertInt(i)); coll.append(","); }
+        stack1.append("1");
+        stack1.append(",");
+
+        //prefix = "00";
+        //coll = "";
+       // p1 = tagno.substr(0,2);
+        //if(p1==prefix) { coll.append(convertInt(i)); coll.append(","); }
+
+        //cout << p1 << "\n";
+
+
     }
+//result = "Collusion Number: 1 (collusion ids: " + coll + ") Number of Collusion: " + count(coll.begin(), coll.end(), ',');
+int col = count(coll.begin(), coll.end(), ',');
+//string mystring = string(col);
+char numstr[100];
+sprintf(numstr, "%d", col);
+string name = "(collusion ids: " + coll + ") Number of Collusion: ";
 
-    cout << "Collusion Number: 2 (collusion ids: " << coll << ") Number of Collusion: " << count(coll.begin(), coll.end(), ',') << "\n";
-    stack1.append("01");
-    stack1.append(",");
+sprintf(numstr, "%d", col);
+result = name + numstr;
+//cout << "Collusion Number: 1 (collusion ids: " << coll << ") Number of Collusion: " << count(coll.begin(), coll.end(), ',') << "\n";
 
-    prefix = "000";
-    coll = "";
-
-    for(int i = 1; i <= 10; i++) {
-        string p1="";
-        string id = ids[i];
-        p1 = id.substr(0,3);
-        if(p1==prefix) { coll.append(convertInt(i)); coll.append(","); }
-    }
-
-   cout << "Collusion Number: 3 (collusion ids: " << coll << ") Number of Collusion: " << count(coll.begin(), coll.end(), ',') << "\n";
-   stack1.append("001");
-   stack1.append(",");
-
-
-   prefix = "001";
-    coll = "";
-
-    for(int i = 1; i <= 10; i++) {
-        string p1="";
-        string id = ids[i];
-        p1 = id.substr(0,3);
-        if(p1==prefix) { coll.append(convertInt(i)); coll.append(","); }
-    }
-
-   cout << "Collusion Number: 4 (collusion ids: " << coll << ") Number of Collusion: " << count(coll.begin(), coll.end(), ',') << "\n";
-   stack1.append("001");
-   stack1.append(",");
-
-
-
-    prefix = "0010";
-    coll = "";
-
-    for(int i = 1; i <= 10; i++) {
-        string p1="";
-        string id = ids[i];
-        p1 = id.substr(0,4);
-        if(p1==prefix) { coll.append(convertInt(i)); coll.append(","); }
-    }
-   cout << "Collusion Number: 5 (collusion ids: " << coll << ") Number of Collusion: " << count(coll.begin(), coll.end(), ',') << "\n";
-   stack1.append("001");
-   stack1.append(",");
-
-    prefix = "0011";
-    coll = "";
-    for(int i = 1; i <= 10; i++) {
-        string p1="";
-        string id = ids[i];
-        p1 = id.substr(0,4);
-        if(p1==prefix) { coll.append(convertInt(i)); coll.append(","); }
-    }
-   cout << "Collusion Number: 6 (collusion ids: " << coll << ") Number of Collusion: " << count(coll.begin(), coll.end(), ',') << "\n";
-   stack1.append("001");
-   stack1.append(",");
-
-
-       prefix = "01";
-    coll = "";
-    for(int i = 1; i <= 10; i++) {
-        string p1="";
-        string id = ids[i];
-        p1 = id.substr(0,4);
-        if(p1==prefix) { coll.append(convertInt(i)); coll.append(","); }
-    }
-   cout << "Collusion Number: 7 (collusion ids: " << coll << ") Number of Collusion: " << count(coll.begin(), coll.end(), ',') << "\n";
-   stack1.append("001");
-   stack1.append(",");
-
-
-    return 0;
+   return result;
 }
 
+int main ()
+{
+    creatID();
 
+
+cout << checkcollusion("0", 1) << "\n";
+cout << checkcollusion("00", 2) << "\n";
+cout << checkcollusion("000", 3) << "\n";
+cout << checkcollusion("001", 4) << "\n";
+cout << checkcollusion("0010", 5) << "\n";
+cout << checkcollusion("0011", 6) << "\n";
+cout << checkcollusion("01", 7) << "\n";
+//cout << "Collusion Number: 2 (collusion ids: " << coll << ") Number of Collusion: " << count(coll.begin(), coll.end(), ',') << "\n";
+   return 0;
+}
